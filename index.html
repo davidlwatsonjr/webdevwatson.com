@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welcome to webdevwatson.com</title>
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            #cta {
+                background-color: #131516;
+                color: #131516;
+                display: block;
+                font-family: 'Courier New', Courier, monospace;
+                font-size: 24px;
+                line-height: 100vh;
+                text-align: center;
+                text-decoration: none;
+            }
+
+        </style>
+    </head>
+    <body>
+        <a href="https://www.linkedin.com/in/davidlwatsonjr/" id="cta">#nerdforhire</a>
+    </body>
+    <script>
+        const getHSLColorFromTodaysTime = function(dateToConvert) {
+          const millisecondsInAMinute = 60 * 1000;
+          const millisecondsInAnHour = 60 * 60 * 1000;
+          const millisecondsInADay = 24 * 60 * 60 * 1000;
+
+          const millisecondsSinceMidnight = (dateToConvert.getHours() * 60 * 60 * 1000) + (dateToConvert.getMinutes() * 60) * 1000 + (dateToConvert.getSeconds() * 1000) + dateToConvert.getMilliseconds();
+          const millisecondsSinceLastHour = (dateToConvert.getMinutes() * 60 * 1000) + (dateToConvert.getSeconds() * 1000) + dateToConvert.getMilliseconds();
+          const millisecondsSinceLastMinute = (dateToConvert.getSeconds() * 1000) + dateToConvert.getMilliseconds();
+
+          const fractionOfTodayGone = millisecondsSinceMidnight / millisecondsInADay;
+          const fractionOfThisHourGone = millisecondsSinceLastHour / millisecondsInAnHour;
+          const fractionOfThisMinuteGone = millisecondsSinceLastMinute / millisecondsInAMinute;
+
+          const hue = Math.round(fractionOfThisHourGone * 360);
+          const saturation = Math.round(2 * Math.abs((fractionOfThisMinuteGone - .5) * 100));
+          const luminosity = Math.round((-2 * Math.abs(fractionOfTodayGone - .5) + 1) * 100);
+
+          const hslColorFromTodaysTime = 'hsl(' + hue + ', ' + saturation + '%, ' + luminosity + '%)';
+
+          return hslColorFromTodaysTime;
+        };
+
+        const ctaElement = document.getElementById('cta');
+
+        const updateLinkColor = function() {
+          ctaElement.style.color = getHSLColorFromTodaysTime(new Date());
+          window.requestAnimationFrame(() => {updateLinkColor();});
+        };
+
+        updateLinkColor();
+      </script>
+</html>
